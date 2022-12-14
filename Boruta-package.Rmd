@@ -1,0 +1,71 @@
+---
+title: "Machine Learning - Feature engineering"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(DefectData)
+data <- loadData("e-learning")
+```
+
+## Boruta
+
+> ###### Package: <https://cran.r-project.org/web/packages/Boruta/index.html>
+>
+> ###### Documentation: <https://cran.r-project.org/web/packages/Boruta/Boruta.pdf>
+>
+> ###### Main information: <https://cran.r-project.org/web/packages/Boruta/vignettes/inahurry.pdf>
+>
+> ###### Walkthroughs and more information: <https://www.analyticsvidhya.com/blog/2016/03/select-important-variables-boruta-package/>
+> ###### <https://www.datacamp.com/tutorial/feature-selection-R-boruta>
+> ###### <https://www.cybaea.net/Journal/2010/11/15/Feature-selection-All-relevant-selection-with-the-Boruta-package/>
+
+*Boruta* is a feature selection method, that is, judges which of the features are important and which are not.
+
+Under the hood, *Boruta* uses feature importance scores which are provided by certain machine learning methods; in particular Random Forest, which happens to be used by default (using the *ranger* package implementation). 
+
+### Experimental Work
+
+Call this package for use.
+
+```{r}
+library(Boruta)
+set.seed(1)
+```
+
+Implement and check the performance of boruta package.
+
+```{r message=FALSE}
+boruta.train <- Boruta(bug~., data = data$data, doTrace = 2)
+```
+
+```{r}
+print(boruta.train)
+plot(boruta.train)
+plotImpHistory(boruta.train)
+```
+
+Obtain the list of confirmed attributes.
+
+```{r}
+selected <- getSelectedAttributes(boruta.train)
+selected
+```
+
+#### Final important features
+
+```{r message=FALSE}
+library(dplyr)
+```
+
+```{r}
+BorutaForComplexity <- select(data$data, wmc, rfc, lcom, npm, loc, bug)
+BorutaForComplexity
+```
+
+```{r}
+BorutaForStability <- as.integer(data$indep %in% selected)
+BorutaForStability
+```

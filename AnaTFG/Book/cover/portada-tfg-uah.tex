@@ -1,0 +1,50 @@
+\thispagestyle{empty}
+
+\BgThispage
+
+\begin{tikzpicture}[remember picture,overlay]
+  \node[yshift=-5cm] at (current page.north west)
+  {
+    \begin{tikzpicture}[remember picture, overlay]
+      \draw[fill=headingPortadaTFG,headingPortadaTFG] (0,0) rectangle (\paperwidth,5cm);
+      \node [yshift=3cm, xshift=0.5\paperwidth, font=\Huge, text centered, midway] {\color{textoHeadingPortadaTFM}\textbf{\myUniversity}};
+      \node [yshift=2cm, xshift=0.5\paperwidth, font=\Huge, text centered, midway] {\color{textoHeadingPortadaTFM}\textbf{\mySchool}};
+    \end{tikzpicture}
+  };
+\end{tikzpicture}
+
+\large
+\vspace{5cm}
+\begin{center}
+
+  \LARGE\textbf{\myDegreefull}
+
+  \vspace{25mm}
+
+  \LARGE\textbf{\myWorkTypeFull}
+
+  \LARGE{\myBookTitle}
+
+  \vspace{5cm}
+
+  \textbf{Author:}  \myAuthorFullName 
+  
+  \vspace{0.5cm}
+
+  \ifthenelse{\equal{\myFlagSplittedAdvisors}{true}}
+  {
+    \textbf{\expandafter\makefirstuc\expandafter{\wordAdvisor}:} \myAcademicTutorFullName{}
+  }
+  {
+    \textbf{\expandafter\makefirstuc\expandafter{\wordAdvisorOrAdvisors}:} \myAdvisors
+  }
+
+\end{center}
+
+\begin{bottomparagraph}
+  \begin{center}
+    \huge{\myThesisDefenseYear}
+  \end{center}
+\end{bottomparagraph}
+
+\clearemptydoublepage

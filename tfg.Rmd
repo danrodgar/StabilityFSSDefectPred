@@ -1,0 +1,490 @@
+---
+title: "Machine Learning - Feature engineering"
+output:
+  html_document:
+    df_print: paged
+---
+
+## DefectData Dataset
+
+R package [DefectData](https://github.com/klainfo/DefectData) is a collection of software metrics dataset for software engineering researchers.
+
+#### Install
+
+with **devtools**:
+
+```{r}
+# install.packages("devtools")
+# devtools::install_github('klainfo/DefectData')
+```
+
+#### Descriptive Statistics of *e-learning* defect dataset
+
+| System     | Corpus | DefectiveRatio | #Modules | #DefectiveModules | #Predictors | EPV       |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| e-learning | ck     | 7.812500       | 64       | 5                 | 20          | 0.2500000 |
+
+Load selected dataset, in this case e-learning dataset.
+
+```{r}
+library(DefectData)
+data <- loadData("e-learning")
+```
+
+```{r}
+data$dep
+data$indep
+data$data
+```
+
+Convert logical output ("bug" column) to numeric output. Some packages only work with numeric output, for instance FSinR or caret.
+
+```{r}
+numdata <- data
+numdata$data$bug = as.integer(numdata$data$bug)
+```
+
+```{r}
+numdata$data
+```
+
+## Packages
+
+### [FSinR](https://cran.r-project.org/web/packages/FSinR/vignettes/FSinR.html)
+
+The way to install the package from the CRAN repository is as follows:
+
+```{r}
+# install.packages("FSinR")
+# install.packages("tidyselect")
+```
+
+It is important to note that the FSinR package does not divide data into training and test data. Instead, it applies the feature selection process to the entire dataset passed to it as a parameter.
+
+```{r}
+library(FSinR)
+set.seed(234)
+```
+
+First, the wrapper method must be generated.
+
+```{r}
+evaluator <- wrapperEvaluator("knn")
+```
+
+The next step is to generate the search algorithm.
+
+```{r}
+searcher <- searchAlgorithm('sequentialForwardSelection')
+```
+
+Once we have generated the search algorithm and the wrapper method we call the main function that performs the feature selection process.
+
+```{r}
+numdata2<-numdata
+numdata2$data$bug<-as.factor(numdata2$data$bug)
+results <- featureSelection(numdata2$data, numdata2$dep, searcher, evaluator)
+```
+
+The results show the best subset of features found and its evaluation.
+
+```{r}
+bestFeatures <- results$bestFeatures
+bestFeatures
+```
+
+#### Final important features
+
+```{r}
+# install.packages("dplyr")
+```
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+FSinRForComplexity <- select(data$data, -noc)
+FSinRForComplexity
+```
+
+```{r}
+FSinRForStability <- c(bestFeatures)
+FSinRForStability
+```
+
+### [Boruta](https://www.analyticsvidhya.com/blog/2016/03/select-important-variables-boruta-package/)
+
+Install and call this package for use.
+
+```{r}
+# install.packages("Boruta")
+```
+
+```{r}
+library(Boruta)
+```
+
+Implement and check the performance of boruta package.
+
+```{r}
+# ?Boruta
+```
+
+```{r}
+set.seed(777)
+boruta.train <- Boruta(bug~., data = data$data, doTrace = 2)
+```
+
+```{r}
+print(boruta.train)
+```
+
+Plot the boruta variable importance chart.
+
+```{r}
+plot(boruta.train)
+```
+
+Obtain the list of confirmed attributes.
+
+```{r}
+selected <- getSelectedAttributes(boruta.train)
+selected
+```
+
+#### Final important features
+
+```{r}
+BorutaForComplexity <- select(data$data, wmc, rfc, lcom, npm, loc, bug)
+BorutaForComplexity
+```
+
+```{r}
+BorutaForStability <- as.integer(data$indep %in% selected)
+BorutaForStability
+```
+
+### [caret](https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/)
+
+A popular automatic method for feature selection provided by the caret R package is called Recursive Feature Elimination or RFE.
+
+First, we install package and load the library. We also install and load other packages needed.
+
+```{r}
+# install.packages("caret")
+# install.packages("randomForest")
+```
+
+```{r}
+library(ggplot2)
+library(lattice)
+
+library(caret)
+```
+
+Ensure the results are repeatable.
+
+```{r}
+set.seed(7)
+```
+
+Define the control using a random forest selection function.
+
+```{r}
+control <- rfeControl(functions=rfFuncs, method="cv", number=10)
+```
+
+Run the RFE algorithm.
+
+```{r}
+results <- rfe(numdata$data[,1:20], as.factor(numdata$data$bug), sizes=c(1:20), rfeControl=control)
+```
+
+Summarize the results.
+
+```{r}
+print(results)
+```
+
+List the chosen features.
+
+```{r}
+selected <- predictors(results)
+selected
+```
+
+#### Final important features
+
+```{r}
+caretForComplexity <- select(data$data, npm, rfc, bug)
+caretForComplexity
+```
+
+```{r}
+caretForStability <- as.integer(data$indep %in% selected)
+caretForStability
+```
+
+### [spFSR](https://cran.r-project.org/web/packages/spFSR/vignettes/spFSR.html)
+
+The *spFSR* package can be installed from CRAN as follow:
+
+```{r}
+# install.packages("spFSR")
+```
+
+After loading the *mlr* package, we create a *wrapper* which is a knn learner with $k=5$. Then, we make a classification task by specifying Species as the response or target variable we would like to predict. Lastly, we specify *acc* (accuracy) to evaluate the wrapper's performance.
+
+```{r warning=FALSE}
+library(ParamHelpers)
+library(mlr)
+knnWrapper <- makeLearner("classif.knn", k = 5) 
+classifTask <- makeClassifTask(data = data$data, target = data$dep)
+perf.measure <- acc
+```
+
+Select features using *spFeatureSelection*.
+
+```{r}
+library(spFSR)
+set.seed(123)
+spsaMod <- spFeatureSelection(task = classifTask, wrapper = knnWrapper, measure = perf.measure, num.features.selected = 3, iters.max = 10, num.cores = 2)
+```
+
+The spFSR package supports three S3 generic methods: *print*, *summary*, and *plot*. The usages of *print* and *summary* are quite straigh forward. The summary returns the following information:
+
+```{r}
+summary(spsaMod)
+```
+
+*getImportance* returns the importance ranks of best performing features as a data.frame object and *plotImportance* plots the importance ranks of best performing features.
+
+```{r}
+importance <- getImportance(spsaMod)
+importance
+plotImportance(spsaMod)
+```
+
+#### Final important features
+
+```{r}
+spFSRForComplexity <- select(data$data, cbo, cam, npm, bug)
+spFSRForComplexity
+```
+
+```{r}
+spFSRForStability <- as.integer(data$indep %in% importance$features)
+spFSRForStability
+```
+
+### [varSelRF](https://www.kaggle.com/code/netzone/mushroom-classification-using-varselrf/report)
+
+Load the data and quick check on it.
+
+```{r}
+# install.packages("varSelRF")
+```
+
+```{r}
+library(randomForest)
+library(varSelRF)
+```
+
+Let's select the variables using varSelRF function. Using variable selection and variable importance.
+
+```{r}
+x <- select(data$data, -bug)
+y <- as.factor(data$data$bug)
+
+var.sel <- varSelRF(x, y, ntree = 50, ntreeIterat = 20, vars.drop.frac = 0.3, whole.range = F, keep.forest = T)
+```
+
+Initial importance variables and selected variables.
+
+```{r}
+val.rank = var.sel$initialImportances[order(var.sel$initialImportances, decreasing =T)[1:ncol(x)], 1]
+as.data.frame(val.rank)
+
+selected <- var.sel$selected.vars
+selected
+```
+
+#### Final important features
+
+```{r}
+varSelRFForComplexity <- select(data$data, npm, rfc, bug)
+varSelRFForComplexity
+```
+
+```{r}
+varSelRFForStability <- as.integer(data$indep %in% selected)
+varSelRFForStability
+```
+
+## Complexity ([Ecol](https://github.com/lpfgarcia/ECoL))
+
+The Extended Complexity Library (ECoL) is the implementation in R of a set of measures to characterize the complexity of classification and regression problems.
+
+### Measures
+
+**Feature-based measures**
+
+-   F1: Fisher's discriminant ratio
+-   F1v: The directional-vector Fisher's discriminant ratio
+-   F2: Overlapping of the per-class bounding boxes
+-   F3: Maximum individual feature efficiency
+-   F4: Cllective feature efficiency
+
+**Neighborhood information**
+
+-   N1: Fraction of points lying on the class boundary
+-   N2: Average intra/inter class nearest neighbor distances
+-   N3: Leave-one-out error rate of the 1-nearest neighbor algorithm
+-   N4: Nonlinearity of the one-nearest neighbor classifier
+-   N5: Fraction of maximum covering spheres on data
+-   N6: Local-Set cardinality average
+
+**Linearity**
+
+-   L1: Distance of erroneous instances to a linear classifier
+-   L2: Training error of a linear classifier
+-   L3: Nonlinearity of a linear classifier
+
+**Dimensionality**
+
+-   D1: Average number of samples per dimension
+-   D2: Average intrinsic dimensionality per number of examples
+-   D3: Intrinsic dimensionality proportion
+
+**Class balance**
+
+-   B1: Entropy of class proportions
+-   B2: Multi-class imbalance ratio
+
+**Structural representation**
+
+-   G1: Average density of network
+-   G2: Clustering Coefficient
+-   G3: Average hub score
+
+**Feature correlation**
+
+-   C1: Feature correlation to the output
+-   C2: Average feature correlation to the output
+-   C3: Individual feature efficiency
+-   C4: Collective feature efficiency
+
+**Smoothness**
+
+-   S1: Output distribution
+-   S2: Input distribution
+-   S3: Error of a nearest neighbor regressor
+-   S4: Non-linearity of nearest neighbor regressor
+
+### Installation
+
+The installation process is similar to other packages available on CRAN:
+
+```{r}
+# install.packages("ECoL")
+```
+
+```{r}
+library("ECoL")
+```
+
+### Use
+
+Extract all complexity measures for classification task.
+
+#### Initial data
+
+```{r}
+complexity(bug ~ ., data$data)
+```
+
+#### Data after feature selection with FSinR package
+
+```{r}
+complexity(bug ~ ., FSinRForComplexity)
+```
+
+#### Data after feature selection with Boruta package
+
+```{r}
+complexity(bug ~ ., BorutaForComplexity)
+```
+
+#### Data after feature selection with caret package
+
+```{r}
+complexity(bug ~ ., caretForComplexity)
+```
+
+#### Data after feature selection with spFSR package
+
+```{r}
+complexity(bug ~ ., spFSRForComplexity)
+```
+
+#### Data after feature selection with varSelRF package
+
+```{r}
+complexity(bug ~ ., varSelRFForComplexity)
+```
+
+## Stability ([nogueirs](https://github.com/nogueirs/JMLR2018))
+
+```{r}
+stabilityMatrix <- rbind(FSinRForStability, BorutaForStability, caretForStability, spFSRForStability, varSelRFForStability)
+
+stabilityMatrix
+```
+
+```{r}
+source("./R/getStability.R")
+
+stability = getStability(stabilityMatrix)
+stability
+
+stability$stability
+```
+
+## SHAP values: measuring impact of each feature in final prediction
+
+The R package to be used is called SHAPforxgboost. SHAP-values (impact values of each feature) are calculated using a XGBoost type classifier, very popular in kaggle.com competitions.
+
+```{r}
+# install.packages("SHAPforxgboost")
+```
+
+Get only predictor features.
+
+```{r}
+library("SHAPforxgboost")
+X1 = as.matrix(select(data$data, -bug))
+```
+
+Learn XGBoost model. Set predictors and class.
+
+```{r}
+mod1 = xgboost::xgboost(data = X1, label = data$data$bug, gamma = 0, eta = 1, lambda = 0, nrounds = 1, verbose = FALSE)
+```
+
+Calculate SHAP values for each case according to learned model.
+
+```{r}
+shap_values <- shap.values(xgb_model = mod1, X_train = X1)
+shap_values$mean_shap_score
+shap_values_data <- shap_values$shap_score
+shap_long_data <- shap.prep(xgb_model = mod1, X_train = X1)
+```
+
+Show SHAP summary plot.
+
+```{r}
+shap.plot.summary(shap_long_data)
+```
+
+To interpret the graph, it is necessary to know that from the vertical origin to the right implies a positive prediction, *bug* feature is *TRUE*. The graph represents a density, a cloud of points, each one representing a case. For example, higher values of the *wmc* feature (violet color) 'push towards' a positive result (to the right of the vertical separation).

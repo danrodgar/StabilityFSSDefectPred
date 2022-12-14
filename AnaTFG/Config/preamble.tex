@@ -1,0 +1,319 @@
+\synctex=1
+
+\usepackage{ifthen}
+
+\newcommand{\colorspaceused}{rgb}
+
+\ifthenelse{\equal{\colorspaceused}{rgb}}
+{
+  \PassOptionsToPackage{rgb}{xcolor}
+}
+{
+  \PassOptionsToPackage{cmyk}{xcolor}
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{lmodern}
+
+\usepackage{wrapfig}
+\usepackage{lipsum}
+
+\usepackage[final]{pdfpages}
+
+\usepackage{emptypage}
+
+\usepackage{tocbibind}
+
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{afterpage}
+
+\usepackage{xspace}
+\usepackage{verbatim}
+\usepackage{moreverb}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{eurosym}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{makeidx}
+\usepackage{rotating}
+\usepackage{supertabular}
+\usepackage{hhline}
+\usepackage{array}
+\usepackage[noadjust]{cite}
+
+\usepackage[center]{caption}
+\usepackage{subcaption}
+
+\usepackage{xcolor}
+\definecolor{pantone293}{RGB}{35,91,168}
+
+\definecolor{headingPortadaTFG}{RGB}{152,118,52}
+\definecolor{headingPortadaTFM}{RGB}{0,90,170}
+\definecolor{textoHeadingPortadaTFM}{RGB}{208,205,102}
+\definecolor{textoHeadingPortadaTFG}{RGB}{208,205,102}
+
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+\usepackage{tikz}
+
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+\usepackage[
+bookmarks=true,
+bookmarksnumbered=true,
+hypertexnames=false,
+breaklinks=true,
+linktoc=all,
+colorlinks=true,
+linkcolor=blue,    
+citecolor=green,
+urlcolor=blue,
+pdfborder={0 0 112.0},
+hyperfootnotes=false,
+]{hyperref}
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\setcounter{table}{1}
+\setcounter{figure}{1}
+\setcounter{secnumdepth}{4}
+
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\usepackage{multirow}
+
+\usepackage{setspace}
+\newcommand{\mycaptiontable}[1]{
+  \begin{spacing}{0.6}
+    \begin{quote}
+      {{Table} \thechapter.\arabic{table}: #1}
+    \end{quote}
+  \end{spacing}
+  \stepcounter{table}
+}
+
+\newcommand{\mycaptionfigure}[1]{
+  \begin{spacing}{0.6}
+    \begin{quote}
+      {{Figure} \thechapter.\arabic{figure}: #1}
+    \end{quote}
+  \end{spacing}
+  \stepcounter{figure}
+}
+
+\usepackage{amsmath}
+
+\usepackage{courier}
+
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{setspace, amssymb, amsmath, epsfig, multirow, colortbl, tabularx}
+
+\usepackage[acronym,shortcuts,nomain,hyperfirst=false]{glossaries}
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
+\pagestyle{fancy}
+
+\providecommand\phantomsection{}
+\onehalfspacing
+\sloppy
+
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}{}}
+
+\fancyhf{}
+
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO]{\bfseries\rightmark}
+\fancyhead[RE]{\bfseries\leftmark}
+
+\makeatletter
+\renewcommand{\chaptermark}[1]{\markboth{\@chapapp \ \thechapter . \ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection \ \ #1}}
+\makeatother
+
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{3.5pt}
+\fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrulewidth}{0pt}}
+\fancypagestyle{myplain}
+{
+  \fancyhf{}
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyfoot[C]{\thepage}
+}
+
+\usepackage[pages=some]{background}
+
+\ifthenelse{\equal{\colorspaceused}{rgb}}
+{
+  \backgroundsetup{ scale=1, angle=0, opacity=.1, color=pink,
+    contents={\includegraphics[width=.7\paperwidth]{logos/logoEPS-UAH.jpg}}, vshift=-50pt,  hshift=0pt }
+}
+{
+  \backgroundsetup{ scale=1, angle=0, opacity=.1, color=pink,
+    contents={\includegraphics[width=.7\paperwidth]{logos/logoEPS-UAH-cmyk.jpg}}, vshift=-50pt,  hshift=0pt }
+}
+
+\makeatletter
+\newcommand*{\cleartoleftpage}{%
+  \clearpage
+  \if@twoside
+  \ifodd\c@page
+  \hbox{}\newpage
+  \if@twocolumn
+  \hbox{}\newpage
+  \fi
+  \fi
+  \fi
+}
+\makeatother
+
+\usepackage{float}
+\floatstyle{plaintop}
+\newfloat{codefloat}{H}{cod}[chapter]
+
+\lstdefinestyle{console}
+{
+  basicstyle=\scriptsize\bf\ttfamily,
+  backgroundcolor=\color{gray75},
+}
+
+\lstdefinestyle{Cbluebox}
+{
+  language=C,
+  frame=shadowbox, 
+  rulesepcolor=\color{blue}
+}
+
+\lstdefinestyle{Cnice}
+{
+  language=C,
+  frame=Ltb,
+  framerule=0pt,
+  tabsize=2,
+  aboveskip=0.5cm,
+  framextopmargin=3pt,
+  framexbottommargin=3pt,
+  framexleftmargin=0.4cm,
+  framesep=0pt,
+  rulesep=.4pt,
+  backgroundcolor=\color{gray97},
+  rulesepcolor=\color{black},
+  stringstyle=\ttfamily,
+  showstringspaces = false,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\color{gray45},
+  keywordstyle=\bfseries,
+  numbers=left,
+  numbersep=15pt,
+  numberstyle=\tiny,
+  numberfirstline = false,
+  breaklines=true,
+}	
+
+\lstdefinestyle{CppExample}
+{
+  language=C++,
+  frame=trbl,
+  tabsize=2,
+  commentstyle=\textit,
+  stringstyle=\ttfamily, 
+  basicstyle=\small,
+}	
+
+\lstdefinestyle{Ccolor}
+{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=3pt,
+  frame=tb, 
+  showspaces=false, 
+  showtabs=false,
+  showstringspaces=false,
+  columns=fullflexible,
+  backgroundcolor=\color{gray97},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.05\linewidth
+}
+
+\usepackage{sidecap}
+
+\def\texis{\TeX \raise.15em\hbox{\textsc{i}}S}
+
+\newenvironment{FraseCelebre}
+{\begin{list}{}{
+      \setlength{\leftmargin}{0.5\textwidth}
+      \setlength{\parsep}{0cm}
+      \addtolength{\topsep}{0.5cm}
+    }
+  }
+  {\unskip \end{list}}
+
+\newenvironment{Frase}
+{\item \begin{flushright}\small\em}
+  {\end{flushright}}
+
+\newenvironment{Fuente}
+{\item \begin{flushright}\small}
+  {\end{flushright}}
+
+\newenvironment{bottomparagraph}{\par\vspace*{\fill}}{\clearpage}
+
+\usepackage[vlined,algochapter]{algorithm2e}
+\providecommand{\DontPrintSemicolon}{\dontprintsemicolon}
+\providecommand{\SetAlgoLined}{\SetLine}
+
+\usepackage{fix-cm}
+
+\usepackage{graphicx}
+
+\newcommand{\myreferencespath}{}
+
+\providecommand{\DIFadd}[1]{{\protect\color{blue}\textbf{#1}}}
+\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}
+
+\usepackage{ifpdf}
+\ifpdf
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\else
+  \DeclareGraphicsExtensions{.eps}
+\fi
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\clubpenalty=10000
+\widowpenalty=10000
+
+\usepackage[titletoc]{appendix}
+\usepackage{etoolbox}
+\makeatletter
+\appto{\appendices}{\def\Hy@chapapp{Appendix}}
+\makeatother
+
+\usepackage{hyperref}

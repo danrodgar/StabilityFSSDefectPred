@@ -1,0 +1,218 @@
+---
+title: "Machine Learning - Feature engineering"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r loadDataset}
+source("./loadDataset.R")
+data <- loadDataset("ckjm")
+data
+```
+
+## FSinR Package
+
+> ###### Package: <https://cran.r-project.org/web/packages/FSinR/>
+>
+> ###### Documentation: <https://cran.r-project.org/web/packages/FSinR/FSinR.pdf>
+>
+> ###### Walkthrough: <https://cran.r-project.org/web/packages/FSinR/vignettes/FSinR.html>
+
+The package *FSinR* contains functions to perform the feature selection process. More specifically, it contains a large number of filter and wrapper methods that are combined with search algorithms in order to obtain an optimal subset of features. The *FSinR* package uses the functions for training classification and regression models available in the R *caret* package to generate wrapper measures. This gives the package a great background of methods and functionalities.
+
+The feature selection process is done with the *featureSelection* function. Given a search algorithm and an evaluation method, it uses the search algorithm in combination with the evaluation results to guide the feature selection process to an optimal subset. This is the main function of the package and its parameters are:
+
+-   data: a matrix or data.frame with the dataset
+-   class: the name of the dependent variable
+-   searcher: the search algorithm
+-   evaluator: the evaluation method (filter or wrapper method)
+
+The search functions present in the package are the following:
+
+1.    *sequentialForwardSelection*: Sequential forward selection (sfs)
+2.    *sequentialFloatingForwardSelection*: Sequential floating forward selection (sffs)
+3.    *sequentialBackwardSelection*: Sequential backward selection (sbs)
+4.    *sequentialFloatingBackwardSelection*: Sequential floating backward selection (sfbs)
+5.    *breadthFirst*: Breadth first search
+6.    *deepFirst*: Deep first search
+7.    *geneticAlgorithm*: Genetic algorithm (GA)
+8.    *whaleOptimization*: Whale optimization algorithm (WOA)
+9.    *antColony*: Ant colony optimization (ACO)
+10.   *simulatedAnnealing*: Simulated annealing (SA)
+11.   *tabu*: Tabu search (TS)
+12.   *hillClimbing*: Hill-Climbing (HC)
+13.   *LasVegas*: Las Vegas wrapper (LV)
+
+The package contains a function, *searchAlgorithm*, which allows you to select the search algorithm to be used in the feature selection process. Generates a search function. This function in combination with the evaluator guides the feature selection process. Specifically, the result of calling this function is another function that is passed on as a parameter to the *featureSelection* function. However, you can run this function directly to perform a search process in the features space. The function consists of the following parameters:
+
+-   searcher: the name of the search algorithm
+-   params: a list of specific parameters for each algorithm
+
+The filter methods implemented in the package are:
+
+1.    *binaryConsistency*: Binary consistency measure.
+2.    *chiSquared*: Chi squared measure.
+3.    *cramer*: Cramer V measure.
+4.    *determinationCoefficient*: R Squared, to continous features.
+5.    *fscore*: F-score measure.
+6.    *gainRatio*: The gain ratio measure.
+7.    *giniIndex*: Gini index measure.
+8.    *IEConsistency*: Inconsistent Examples consistency measure.
+9.    *IEPConsistency*: Inconsistent Examples Pairs consistency measure.
+10.   *Jd*: Jd evaluation measure.
+11.   *MDLC*: MDLC evaluation measure.
+12.   *mutualInformation*: The mutual information measure.
+13.   *roughsetConsistency*: Rough Set consistency measure.
+14.   *relief*: Relief.
+15.   *ReliefFeatureSetMeasure*: Relief Feature Set Measure evaluation measure.
+16.   *symmetricalUncertain*: Symmetrical uncertain measure.
+
+The *filterEvaluator* function allows you to select a filter method from the above. The function has the parameters:
+
+-   filter: the name of the filter method
+-   params: a list of specific parameters for each method
+
+The *FSinR* package allows the possibility of using [the 238 models available in the *caret* package](http://topepo.github.io/caret/available-models.html) as wrapper methods. The *wrapperEvaluator* function is used to set all parameters of these methods and use them to generate the wrapper model using as background the functions of *caret*. Generates a wrapper function to be used as an evaluator in the feature selection proccess, given a learner algorithm and related customizable parameters. More specifically, the result of calling this function is another function that is passed on as a parameter to the *featureSelection* function. However, you can also run this function directly to generate an evaluation measure. The *wrapperEvaluator* function has as parameters:
+
+-   learner: model name of those available in caret
+-   resamplingParams: list of parameters for trainControl function
+-   fittingParams: list of parameters for train function (x, y, method and trainControl not neccesary)
+
+### Experimental Work
+
+To demonstrate in a simple manner how package works, the previously loaded dataset will be used in this example.
+
+It is important to note that the FSinR package does not divide data into training and test data. Instead, it applies the feature selection process to the entire dataset passed to it as a parameter.
+
+```{r loadPackage}
+library(FSinR)
+```
+
+Next we will illustrate an example of feature selection composed of a search algorithm and a filter method.
+
+First, the filter method must be generated. This is done with the function *filterEvaluator*.
+
+In this case, with ["How to Choose a Feature Selection Method For Machine Learning"](https://machinelearningmastery.com/feature-selection-with-real-and-categorical-data/) article help, we know that the chosen dataset has a numerical input and a categorical output (logic). According to the article ["How to Perform Feature Selection With Numerical Input Data"](https://machinelearningmastery.com/feature-selection-with-numerical-input-data/), there are two popular feature selection techniques that can be used for numerical input data and a categorical (class) target variable: ANOVA-f Statistic and Mutual Information Statistics. The mutual information measure is one of the filters that are already implemented in the *FSinR* package but the input data should be discrete and it's not. Coefficient of determination or R Squared measure is similar to an ANOVA (analysis of variance) measure. Both methods find the "line of best fit" that minimizes the sum-of-squared residuals, and calculate the residual variance as a fraction of the total unconditional variance of the outcome. Therefore, *determinationCoefficient* is the chosen method.
+
+```{r evaluator}
+evaluator <- filterEvaluator('determinationCoefficient')
+```
+
+The next step is to generate the search algorithm. This is done by calling the *searchAlgorithm* function and specifying the algorithm you want to use. In this case we are going to use as a search algorithm a sequential search, *sequentialForwardSelection*.
+
+```{r searcher}
+searcher <- searchAlgorithm('sequentialForwardSelection')
+```
+
+Once we have generated the search algorithm and the filter method we call the main function that performs the feature selection process.
+
+```{r featureSelection}
+results <- featureSelection(data, "bug", searcher, evaluator)
+```
+
+The results show the best subset of features found and its evaluation.
+
+```{r bestFeatures}
+bestFeatures <- results$bestFeatures
+bestFeatures
+```
+
+#### Create a function
+
+Now a function will be created to apply feature selection of *FSinR* package to all chosen datasets. It will return a matrix where each row is a list with best features of each dataset. The function will be saved in a R script so that it can be used later.
+
+```{r, file = 'applyFSinR.R'}
+```
+
+Example of *applyFSinR* function usage:
+```{r example}
+source("./loadDataset.R")
+source("./applyFSinR.R")
+
+FSMatrix <- mapply(applyFSinR, dsnames, algorithm='sequentialForwardSelection')
+FSMatrix
+#FSMatrix[,"ckjm"]
+```
+
+### Apply all available search algorithms
+
+```{r sequentialForwardSelection}
+FSMatrix_sfs <- FSMatrix
+FSMatrix_sfs
+```
+
+```{r sequentialFloatingForwardSelection}
+FSMatrix_sffs <- mapply(applyFSinR, dsnames, algorithm='sequentialFloatingForwardSelection')
+FSMatrix_sffs
+```
+
+```{r sequentialBackwardSelection}
+FSMatrix_sbs <- mapply(applyFSinR, dsnames, algorithm='sequentialBackwardSelection')
+FSMatrix_sbs
+```
+
+```{r sequentialFloatingBackwardSelection}
+FSMatrix_sfbs <- mapply(applyFSinR, dsnames, algorithm='sequentialFloatingBackwardSelection')
+FSMatrix_sfbs
+```
+
+```{r breadthFirst}
+#FSMatrix_bfs <- mapply(applyFSinR, dsnames, algorithm='breadthFirst')
+#FSMatrix_bfs
+```
+
+```{r deepFirst}
+#FSMatrix_dfs <- mapply(applyFSinR, dsnames, algorithm='deepFirst')
+#FSMatrix_dfs
+```
+
+```{r geneticAlgorithm}
+FSMatrix_ga <- mapply(applyFSinR, dsnames, algorithm='geneticAlgorithm')
+FSMatrix_ga
+```
+
+```{r whaleOptimization}
+FSMatrix_woa <- mapply(applyFSinR, dsnames, algorithm='whaleOptimization')
+FSMatrix_woa
+```
+
+```{r antColony}
+#FSMatrix_aco <- mapply(applyFSinR, dsnames, algorithm='antColony')
+#FSMatrix_aco
+```
+
+```{r simulatedAnnealing}
+FSMatrix_sa <- mapply(applyFSinR, dsnames, algorithm='simulatedAnnealing')
+FSMatrix_sa
+```
+
+```{r tabu}
+FSMatrix_ts <- mapply(applyFSinR, dsnames, algorithm='tabu')
+FSMatrix_ts
+```
+
+```{r hillClimbing}
+FSMatrix_hc <- mapply(applyFSinR, dsnames, algorithm='hillClimbing')
+FSMatrix_hc
+```
+
+```{r LasVegas}
+FSMatrix_lv <- mapply(applyFSinR, dsnames, algorithm='LasVegas')
+FSMatrix_lv
+```
+
+Example of *applyFSinR* function usage:
+```{r Dani}
+source("./loadDataset.R")
+source("./applyFSinR.R")
+
+algorithm='sequentialForwardSelection'
+
+FSMatrix <- mapply(applyFSinR_FS, dsnames, 
+                   searcher='sequentialForwardSelection',
+                   evaluator='MDLC')
+FSMatrix
+attributes(FSMatrix) 
+str(FSMatrix)
+```

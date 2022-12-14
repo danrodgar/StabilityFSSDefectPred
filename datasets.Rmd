@@ -1,0 +1,83 @@
+---
+title: "Machine Learning - Feature engineering"
+output:
+  html_document:
+    df_print: paged
+---
+
+## DefectData Dataset
+
+R package [DefectData](https://github.com/klainfo/DefectData) is a collection of software metrics dataset for software engineering researchers.
+
+### Descriptive Statistics of 6 representative defect datasets
+
+The descriptive statistics are:
+
+-   **System:** name of the dataset.
+-   **Corpus:** type of data in the dataset. In this case, all of them are *ck* (chidamber-kemerer metrics).
+-   **Defective Ratio:** percentage of total modules that are defective modules.
+
+    $DefectiveModules*100/Modules$
+    
+-   **Number of Modules:** total modules of the dataset.
+-   **Number of Defective Modules:** defective modules of the dataset.
+-   **Number of Predictors:** amount of features used in the dataset. In this case, all of them are 20 predictors.
+-   **EPV (Events Per Variable):** the number of events (defective modules) divided by the number of predictor variables considered in developing the prediction.
+
+    $DefectiveModules/Predictors$
+
+Six of the 101 datasets available in this github repository have been chosen.
+
+-   *xalan-2.7*: has a high DefectiveRatio and a high number of Modules.
+-   *jedit-4.3*: has a low DefectiveRatio and a high number of Modules.
+-   *ckjm*: has a medium DefectiveRatio and a low number of Modules.
+-   *xalan-2.5*: has a medium DefectiveRatio and a high number of Modules.
+-   *forrest-0.6*: has a low DefectiveRatio and a low number of Modules.
+-   *pbeans1*: has a low DefectiveRatio and a low number of Modules.
+
+*EPV* is less when *DefectiveModules* is also less and it is larger when *DefectiveModules* is larger.
+
+The following table details the statistics of the chosen datasets:
+
+| System      | Corpus | DefectiveRatio | #Modules | #DefectiveModules | #Predictors | EPV        |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| xalan-2.7   | ck     | 98.789879      | 909      | 898               | 20          | 44.9000000 |
+| jedit-4.3   | ck     | 2.235772       | 492      | 11                | 20          | 0.5500000  |
+| ckjm        | ck     | 50.000000      | 10       | 5                 | 20          | 0.250000   |
+| xalan-2.5   | ck     | 48.194271      | 803      | 387               | 20          | 19.3500000 |
+| forrest-0.6 | ck     | 16.666667      | 6        | 1                 | 20          | 0.0500000  |
+| pbeans1     | ck     | 76.923077      | 26       | 20                | 20          | 1.0000000  |
+
+
+### Set up to use
+
+Firstly, we create a list with the names of all chosen datasets.
+
+```{r}
+dsnames <- c("xalan-2.7", "jedit-4.3", "ckjm", "xalan-2.5", "forrest-0.6", "pbeans1")
+```
+
+The data from the *ckjm* dataset is loaded to show as an example:
+```{r}
+library(DefectData)
+
+data <- loadData("ckjm")
+data$data
+
+# Same in all chosen datasets
+data$indep
+
+# Same in all chosen datasets
+data$dep
+```
+
+Then, we create a function to load only the data from a chosen dataset without indep and dep components. We add this function and *dsnames* list to a R script.
+
+```{r, file = 'loadDataset.R'}
+```
+
+Example of *loadDataset* use:
+```{r eval=FALSE}
+source("./loadDataset.R")
+loadDataset("ckjm")
+```

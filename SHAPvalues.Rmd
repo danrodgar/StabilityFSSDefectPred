@@ -1,0 +1,55 @@
+---
+title: "Machine Learning - Feature engineering"
+output: html_notebook
+---
+
+```{r}
+install.packages("devtools")
+devtools::install_github('klainfo/DefectData')
+```
+
+```{r}
+library(DefectData)
+data <- loadData("e-learning")
+```
+
+
+## SHAP values: measuring impact of each feature in final prediction
+
+The R package to be used is called SHAPforxgboost. SHAP-values (impact values of each feature) are calculated using a XGBoost type classifier, very popular in kaggle.com competitions.
+
+```{r}
+install.packages("SHAPforxgboost")
+```
+
+Get only predictor features.
+
+```{r}
+library("SHAPforxgboost")
+X1 = as.matrix(select(data$data, -bug))
+```
+
+Learn XGBoost model. Set predictors and class.
+
+```{r}
+mod1 = xgboost::xgboost(data = X1, label = data$data$bug, gamma = 0, eta = 1, lambda = 0, nrounds = 1, verbose = FALSE)
+```
+
+Calculate SHAP values for each case according to learned model.
+
+```{r}
+shap_values <- shap.values(xgb_model = mod1, X_train = X1)
+shap_values$mean_shap_score
+shap_values_data <- shap_values$shap_score
+shap_long_data <- shap.prep(xgb_model = mod1, X_train = X1)
+```
+
+Show SHAP summary plot.
+
+```{r}
+shap.plot.summary(shap_long_data)
+```
+
+To interpret the graph, it is necessary to know that from the vertical origin to the right implies a positive prediction, *bug* feature is *TRUE*.
+The graph represents a density, a cloud of points, each one representing a case.
+For example, higher values of the *wmc* feature (violet color) 'push towards' a positive result (to the right of the vertical separation).

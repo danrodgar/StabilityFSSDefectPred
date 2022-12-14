@@ -1,0 +1,341 @@
+\usepackage[english, spanish]{babel}
+\newcommand{\myBookTitle}{\myBookTitleEnglish}
+
+\newcommand{\wordAdvisorOrAdvisors}{advisor}
+\newcommand{\wordAdvisor}{advisor}
+
+\ifthenelse{\equal{\myDegree}{IT}}
+{
+  \newcommand{\myDegreefull}{Ingeniería de Telecomunicación}
+  \newcommand{\myWorkType}{TFC}
+  \ifthenelse{\equal{\myLanguage}{spanish}}
+  {
+    \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+  }
+  {
+    \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+  }
+}
+{
+  \ifthenelse{\equal{\myDegree}{IE}}
+  {
+    \newcommand{\myDegreefull}{Ingeniería Electrónica}
+    \newcommand{\myWorkType}{TFC}
+    \ifthenelse{\equal{\myLanguage}{spanish}}
+    {
+      \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+    }
+    {
+      \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+    }
+  }
+  {
+    \ifthenelse{\equal{\myDegree}{ITTSE}}
+    {
+      \newcommand{\myDegreefull}{Ingeniería Técnica de Telecomunicación, especialidad en Sistemas Electrónicos}
+      \newcommand{\myWorkType}{TFC}
+      \ifthenelse{\equal{\myLanguage}{spanish}}
+      {
+        \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+      }
+      {
+        \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+      }
+    }
+    {
+      \ifthenelse{\equal{\myDegree}{ITTST}}
+      {
+        \newcommand{\myDegreefull}{Ingeniería Técnica de Telecomunicación, especialidad en Sistemas de Telecomunicación}
+        \newcommand{\myWorkType}{TFC}
+        \ifthenelse{\equal{\myLanguage}{spanish}}
+        {
+          \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+        }
+        {
+          \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+        }
+      }
+      {
+        \ifthenelse{\equal{\myDegree}{ITI}}
+        {
+          \newcommand{\myDegreefull}{Ingeniería Técnica Industrial, especialidad en Electrónica Industrial}
+          \newcommand{\myWorkType}{TFC}
+          \ifthenelse{\equal{\myLanguage}{spanish}}
+          {
+            \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+          }
+          {
+            \newcommand{\myWorkTypeFull}{Trabajo Fin de Carrera}
+          }
+        }
+        {
+          \ifthenelse{\equal{\myDegree}{GIEC}}
+          {
+            \newcommand{\myDegreefull}{Grado en Ingeniería Electrónica de Comunicaciones}
+            \newcommand{\myWorkType}{TFG}
+            \ifthenelse{\equal{\myLanguage}{spanish}}
+            {
+              \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+            }
+            {
+              \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+            }
+          }
+          {
+            \ifthenelse{\equal{\myDegree}{GIEAI}}
+            {
+              \newcommand{\myDegreefull}{Grado en Ingeniería en Electrónica y Automática Industrial}
+              \newcommand{\myWorkType}{TFG}
+              \ifthenelse{\equal{\myLanguage}{spanish}}
+              {
+                \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+              }
+              {
+                \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+              }
+            }
+            {
+              \ifthenelse{\equal{\myDegree}{GIST}}
+              {
+                \newcommand{\myDegreefull}{Grado en Ingeniería en Sistemas de Telecomunicación}
+                \newcommand{\myWorkType}{TFG}
+                \ifthenelse{\equal{\myLanguage}{spanish}}
+                {
+                  \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                }
+                {
+                  \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                }
+              }
+              {
+                \ifthenelse{\equal{\myDegree}{GITT}}
+                {
+                  \newcommand{\myDegreefull}{Grado en Ingeniería en Tecnologías de Telecomunicación}
+                  \newcommand{\myWorkType}{TFG}
+                  \ifthenelse{\equal{\myLanguage}{spanish}}
+                  {
+                    \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                  }
+                  {
+                    \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                  }
+                }
+                {
+                  \ifthenelse{\equal{\myDegree}{GIT}}
+                  {
+                    \newcommand{\myDegreefull}{Grado en Ingeniería Telemática}
+                    \newcommand{\myWorkType}{TFG}
+                    \ifthenelse{\equal{\myLanguage}{spanish}}
+                    {
+                      \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                    }
+                    {
+                      \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                    }
+                  }
+                  {
+                    \ifthenelse{\equal{\myDegree}{GIC}}
+                    {
+                      \newcommand{\myDegreefull}{Grado en Ingeniería de Computadores}
+                      \newcommand{\myWorkType}{TFG}
+                      \ifthenelse{\equal{\myLanguage}{spanish}}
+                      {
+                        \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                      }
+                      {
+                        \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                      }
+                    }
+                    {
+                      \ifthenelse{\equal{\myDegree}{GII}}
+                      {
+                        \newcommand{\myDegreefull}{Grado en Ingeniería Informática}
+                        \newcommand{\myWorkType}{TFG}
+                        \ifthenelse{\equal{\myLanguage}{spanish}}
+                        {
+                          \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                        }
+                        {
+                          \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                        }
+                      }
+                      {
+                        \ifthenelse{\equal{\myDegree}{GIS}}
+                        {
+                          \newcommand{\myDegreefull}{Grado en Sistemas de Información}
+                          \newcommand{\myWorkType}{TFG}
+                          \ifthenelse{\equal{\myLanguage}{spanish}}
+                          {
+                            \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                          }
+                          {
+                            \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                          }
+                        }
+                        {
+                          \ifthenelse{\equal{\myDegree}{MUSEA}}
+                          {
+                            \newcommand{\myDegreefull}{Máster Universitario en Sistemas Electrónicos Avanzados. Sistemas Inteligentes}
+                            \newcommand{\myDegreefullwrapped}{Máster Universitario en Sistemas Electrónicos Avanzados\\Sistemas Inteligentes}
+                            \newcommand{\myDegreefullwrappedUpcase}{\MakeUppercase{Máster Universitario en}\\\MakeUppercase{Ingeniería de Telecomunicación}}
+                            \newcommand{\myWorkType}{TFM}
+                            \ifthenelse{\equal{\myLanguage}{spanish}}
+                            {
+                              \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                            }
+                            {
+                              \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                            }
+                          }
+                          {
+                            \ifthenelse{\equal{\myDegree}{PHDUAH}}
+                            {
+                              \newcommand{\myDegreefull}{Estudios de Doctorado}
+                              \newcommand{\myWorkType}{PHDUAH}
+                              \ifthenelse{\equal{\myLanguage}{spanish}}
+                              {
+                                \newcommand{\myWorkTypeFull}{Tesis Doctoral}
+                              }
+                              {
+                                \newcommand{\myWorkTypeFull}{Doctoral Thesis}
+                              }
+                            }
+                            {
+                              \ifthenelse{\equal{\myDegree}{PHDUPM}}
+                              {
+                                \newcommand{\myDegreefull}{Doctor Ingeniero de Telecomunicación}
+                                \newcommand{\myWorkType}{PHDUPM}
+                                \ifthenelse{\equal{\myLanguage}{spanish}}
+                                {
+                                  \newcommand{\myWorkTypeFull}{Tesis Doctoral}
+                                }
+                                {
+                                  \newcommand{\myWorkTypeFull}{Doctoral Thesis}
+                                }
+                              }
+                              {
+                                \ifthenelse{\equal{\myDegree}{GEINTRARR}}
+                                {
+                                  \newcommand{\myDegreefull}{GEINTRA Research Report}
+                                  \newcommand{\myWorkType}{GEINTRARR}
+                                  \ifthenelse{\equal{\myLanguage}{spanish}}
+                                  {
+                                    \newcommand{\myWorkTypeFull}{Informe técnico del Grupo de investigación \myResearchGroup{}}
+                                  }
+                                  {
+                                    \newcommand{\myWorkTypeFull}{\myResearchGroup{} Research Report}
+                                  }
+                                }
+                                {
+                                  \ifthenelse{\equal{\myDegree}{MUIT}}
+                                  {
+                                    \newcommand{\myDegreefull}{Máster Universitario en Ingeniería de Telecomunicación}
+                                    \newcommand{\myDegreefullwrapped}{Máster Universitario en Ingeniería de Telecomunicación}
+                                    \newcommand{\myDegreefullwrappedUpcase}{\MakeUppercase{Máster Universitario en}\\\MakeUppercase{Ingeniería de Telecomunicación}}
+                                    \newcommand{\myWorkType}{TFM}
+                                    \ifthenelse{\equal{\myLanguage}{spanish}}
+                                    {
+                                      \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                    }
+                                    { \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                    }
+                                  }
+                                  {
+                                    \ifthenelse{\equal{\myDegree}{MUII}}
+                                    {
+                                      \newcommand{\myDegreefull}{Máster Universitario en Ingeniería Industrial}
+                                      \newcommand{\myDegreefullwrapped}{Máster Universitario en Ingeniería Industrial}
+                                      \newcommand{\myDegreefullwrappedUpcase}{\MakeUppercase{Máster Universitario en}\\\MakeUppercase{Ingeniería Industrial}}
+                                      \newcommand{\myWorkType}{TFM}
+                                      \ifthenelse{\equal{\myLanguage}{spanish}}
+                                      {
+                                        \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                      }
+                                      {                          \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                      }
+                                    }
+                                    {
+                                      \ifthenelse{\equal{\myDegree}{GITI}}
+                                      {
+                                        \newcommand{\myDegreefull}{Grado en Ingeniería en Tecnologías Industriales}
+                                        \newcommand{\myWorkType}{TFG}
+                                        \ifthenelse{\equal{\myLanguage}{spanish}}
+                                        {
+                                          \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                                        }
+                                        { \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                                        }
+                                      }
+                                      {
+
+                                        \ifthenelse{\equal{\myDegree}{GISI}}
+                                        {
+                                          \newcommand{\myDegreefull}{Grado en Ingeniería en Sistemas de Información}
+                                          \newcommand{\myWorkType}{TFG}
+                                          \ifthenelse{\equal{\myLanguage}{spanish}}
+                                          {
+                                            \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                                          }
+                                          { \newcommand{\myWorkTypeFull}{Trabajo Fin de Grado}
+                                          }
+                                        }
+                                        {
+
+
+                                          \ifthenelse{\equal{\myDegree}{MUIE}}
+                                          {
+                                            
+                                            
+                                            
+                                            \newcommand{\myDegreefull}{Máster Universitario en Ingeniería Electrónica}
+                                            \newcommand{\myDegreefullwrapped}{Máster Universitario en Ingeniería Electrónica}
+                                            \newcommand{\myDegreefullwrappedUpcase}{\MakeUppercase{Máster Universitario en}\\\MakeUppercase{Ingeniería Electrónica}}
+                                            \newcommand{\myWorkType}{TFM}
+                                            \ifthenelse{\equal{\myLanguage}{spanish}}
+                                            {
+                                              \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                            }
+                                            { \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                            }
+                                          }
+                                          {
+                                            \ifthenelse{\equal{\myDegree}{MUCTE}}
+                                            {
+                                              \newcommand{\myDegreefull}{Máster Universitario en Ciencia y Tecnología desde el Espacio}
+                                              \newcommand{\myDegreefullwrapped}{Máster Universitario en\\Ciencia y Tecnología desde el Espacio}
+                                              \newcommand{\myDegreefullwrappedUpcase}{\MakeUppercase{Máster Universitario en}\\\MakeUppercase{Ciencia y Tecnología desde el Espacio}}
+                                              \newcommand{\myWorkType}{TFM}
+                                              \ifthenelse{\equal{\myLanguage}{spanish}}
+                                              {
+                                                \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                              }
+                                              { \newcommand{\myWorkTypeFull}{Trabajo Fin de Máster}
+                                              }
+                                            }
+                                            {
+                                              \newcommand{\myWorkType}{TFG}
+                                              \newcommand{\myDegreefull}{ERROR: Defined degree (\myDegree) unknown, check \texttt{config/myconfig.tex}} 
+                                              \newcommand{\myWorkTypeFull}{ERROR: Defined degree (\myDegree) unknown, check \texttt{config/myconfig.tex}}
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }                               
+                              }                          
+                            }                          
+                          }                          
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

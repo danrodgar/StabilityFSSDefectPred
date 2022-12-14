@@ -1,0 +1,60 @@
+ \documentclass[spanish,openright]{book}
+
+\input{Config/preamble.tex}
+
+\input{Config/myconfig.tex}
+
+\input{Config/glossaries.tex}
+
+\input{Config/postamble.tex}
+
+\graphicspath{{./logos/}{./figures/}}
+
+\input{Book/acronyms/defacronymsgl.tex}
+
+\begin{document}
+
+\frontmatter
+
+\floatname{codefloat}{Listing}
+
+\input{Book/cover/cover.tex}
+
+\input{Book/dedication/dedication.tex}
+
+\input{Book/acknowledgements/acknowledgements.tex}
+
+\input{Book/abstract/resumen.tex}
+\input{Book/abstract/abstract.tex}
+
+\input{Book/cover/toc+lof+lot.tex}
+
+\input{Book/cover/extralistings.tex}
+
+\input{Book/acronyms/acronymsgl.tex}
+
+\mainmatter
+\deactivatetilden
+
+\input{Book/chapters/introduction.tex}
+
+\input{Book/chapters/theoreticalStudy.tex}
+
+\input{Book/chapters/experimentalWork.tex}
+
+\input{Book/chapters/conclusions.tex}
+
+\input{Book/biblio/bibliography.tex}
+
+\begin{appendices}
+  \input{Book/appendix/tools.tex}
+  \input{Book/appendix/r-installation.tex}
+  \input{Book/appendix/install-load-packages.tex}
+  \input{Book/appendix/fsinr-feature-selection.tex}
+\end{appendices}
+
+\backmatter
+
+\input{Book/cover/backpage.tex}
+
+\end{document}
